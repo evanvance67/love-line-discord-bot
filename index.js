@@ -904,6 +904,46 @@ client.once(Events.ClientReady, async () => {
         console.error('Ticket panel setup failed:', error);
     }
 
+   // STAFF-ONLY SERVICE MENU (DROPDOWN ONLY)
+try {
+    const staffMenuChannelId = '1563736870192549990';
+
+    const staffMenuChannel = await client.channels.fetch(
+        staffMenuChannelId
+    );
+
+    if (!staffMenuChannel || !staffMenuChannel.isTextBased() ||
+        !staffMenuChannel.messages) {
+        throw new Error('Staff menu channel is invalid.');
+    }
+
+    const staffMessages = await staffMenuChannel.messages.fetch({
+        limit: 100
+    });
+
+    const existingStaffMenu = staffMessages.find(message =>
+        message.author.id === client.user.id &&
+        message.components.some(row =>
+            row.components.some(component =>
+                component.customId === 'ticket_category'
+            )
+        )
+    );
+
+    if (existingStaffMenu) {
+        console.log('Staff service menu already exists!');
+    } else {
+        const panelPayload = createTicketPanelPayload();
+
+        await staffMenuChannel.send({
+            components: panelPayload.components
+        });
+
+        console.log('Staff service menu posted successfully!');
+    }
+} catch (error) {
+    console.error('Staff service menu setup failed:', error);
+}
     // AUTOMATIC VERIFICATION PANEL
 if (VERIFICATION_ENABLED) {
     try {
