@@ -906,7 +906,7 @@ client.once(Events.ClientReady, async () => {
 
    // STAFF-ONLY SERVICE MENU (DROPDOWN ONLY)
 try {
-    const staffMenuChannelId = '1563736870192549990';
+    const staffMenuChannelId = '1566098375923990728';
 
     const staffMenuChannel = await client.channels.fetch(
         staffMenuChannelId
